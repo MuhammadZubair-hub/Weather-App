@@ -4,11 +4,13 @@ import { MagnifyingGlassIcon,CalendarDaysIcon } from 'react-native-heroicons/out
 import { MapPinIcon } from 'react-native-heroicons/solid'
 import {debounce} from 'lodash'
 import { fetchLocation, fetchWeatherForcast } from '../api/weatherapi'
+import { weatherImages } from '../constant'
 
 const Home = () => {
 
   const [showsearchbar, Setshowsearchbar] = useState(false);
   const [loaction, setLoaction] = useState([]);
+  const [weather,setWeather]= useState({});
 
   const handlePress =value=>{
     console.log(value);
@@ -19,6 +21,7 @@ const Home = () => {
       days:'7',
     }).then(response=>{
       console.log('forcast data',response)
+      setWeather(response.data)
     })
   }
 
@@ -31,7 +34,10 @@ const Home = () => {
     })
   }
 
-  const handleTextdebounce = useCallback(debounce(handleSearch,1200),[])
+  const handleTextdebounce = useCallback(debounce(handleSearch,1200),[]);
+
+  //destructing the curent and loaction object from weather array 
+  const {current, location} = weather;
 
   return (
     <View className='flex-1 relative'>
@@ -98,25 +104,25 @@ const Home = () => {
 
             <Text 
             className='text-white font-semibold text-center text-2xl'
-             >Lahore,
+             >{location?.name},
              <Text 
             className='text-gray-400 font-semibold  text-large'
-             >Pakistan</Text>
+             >{location?.country}</Text>
              </Text>
              {/* waether image */}
              <View className='flex-row justify-center'>
                 <Image
                 className='w-80 h-80'
-                 source={require('../assets/images/partlycloudy.png')} ></Image>
+                 source={weatherImages[current?.condition.text]} ></Image>
              </View>
 
              {/* Teamprature */}
              <View className='space-y-2'>
                 <Text className='text-white font-bold text-center text-6xl'>
-                    23&#176;
+                    {current?.temp_c}&#176;
                 </Text>
                 <Text className='text-white font-bold text-center text-xl'>
-                    Partly Cloudy
+                    {current?.condition.text}
                 </Text>
              </View>
 
@@ -125,11 +131,11 @@ const Home = () => {
           <View className='flex-row justify-between mx-4 mb-3' >
             <View className='flex-row items-center'>
                 <Image className='h-6 w-6' source={require('../assets/icons/wind.png')} ></Image>
-                <Text className='text-white font-semibold text-base ml-2' >23km</Text>
+                <Text className='text-white font-semibold text-base ml-2' >{current?.windchill_c}km</Text>
             </View>
             <View className='flex-row  items-center'>
                 <Image className='h-6 w-6' source={require('../assets/icons/drop.png')} ></Image>
-                <Text className='text-white font-semibold text-base ml-2' >23%</Text>
+                <Text className='text-white font-semibold text-base ml-2' >{current?.humidity}%</Text>
             </View>
             <View className='flex-row  items-center'>
                 <Image className='h-6 w-6' source={require('../assets/icons/sun.png')} ></Image>
@@ -150,6 +156,28 @@ const Home = () => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             >
+
+            {
+              weather?.forecast.forecastday.map((value,index)=>{
+                
+                return(
+                  <View 
+                key={index}
+                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
+                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
+                >
+                    <Image 
+                    className='h-20 w-20'
+                    resizeMode='contain'
+                    source={require('../assets/images/heavyrain.png')}/>
+                    <Text className='text-white' >Monday</Text>
+                    <Text className='text-white font-semibold text-xl' >{value?.day?.maxtemp_c}&#176;</Text>
+                </View>
+                )
+
+              })
+            }
+
                 <View 
                 className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
                 style={{backgroundColor:'rgba(5,0,2,0.15)'}}
