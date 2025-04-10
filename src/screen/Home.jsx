@@ -1,33 +1,58 @@
 import { Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { MagnifyingGlassIcon,CalendarDaysIcon } from 'react-native-heroicons/outline'
 import { MapPinIcon } from 'react-native-heroicons/solid'
 import {debounce} from 'lodash'
 import { fetchLocation, fetchWeatherForcast } from '../api/weatherapi'
 import { weatherImages } from '../constant'
+import * as Progress from 'react-native-progress';
 
 const Home = () => {
+
+
+  useEffect(()=>{
+
+    fetchMyweatherdata();
+
+  },[]);
+
+  const fetchMyweatherdata = async ()=>{
+
+    fetchWeatherForcast({
+      cityName:'Lahore',
+      days:'7'
+    }).then(response=>{
+      setWeather(response.data)
+      setLoading(false)
+    })
+
+  }
 
   const [showsearchbar, Setshowsearchbar] = useState(false);
   const [loaction, setLoaction] = useState([]);
   const [weather,setWeather]= useState({});
+  const [loading,setLoading]= useState(true);
 
   const handlePress =value=>{
-    console.log(value);
+    // console.log(value);
     setLoaction([]);
+    setLoading(true)
     
     fetchWeatherForcast({
       cityName:value.name,
       days:'7',
     }).then(response=>{
-      console.log('forcast data',response)
+      // console.log('forcast data',response)
       setWeather(response.data)
+      setLoading(false)
+      // console.log('data in weather arry',weather.forecast)
     })
   }
 
   const handleSearch = value=>{ 
   fetchLocation({cityName:value}).then(response=>{
         setLoaction(response.data)
+        
         console.log(response);
         console.log('data on array',loaction)
         
@@ -37,13 +62,21 @@ const Home = () => {
   const handleTextdebounce = useCallback(debounce(handleSearch,1200),[]);
 
   //destructing the curent and loaction object from weather array 
-  const {current, location} = weather;
+  const {current, location ,forecast} = weather;
+  console.log(forecast)
 
   return (
     <View className='flex-1 relative'>
       <StatusBar barStyle={'dark-content'} backgroundColor={'rgba(5,0,2,0.1)'} />
-      <Image blurRadius={70} source={require('../assets/images/bg.png')} className='absolute h-full w-full' />
-      <KeyboardAvoidingView 
+      <Image blurRadius={40} source={require('../assets/images/bg-2.jpg')} className='absolute h-full w-full' />
+
+      {
+        loading?(
+          <View className='flex-1 flex-row justify-center items-center'>
+            <Progress.CircleSnail size={500} thickness={20} color={'blue'} />
+          </View>
+        ):(
+          <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
       className='flex-1'>
         <SafeAreaView className='flex-1'>
@@ -158,8 +191,11 @@ const Home = () => {
             >
 
             {
-              weather?.forecast.forecastday.map((value,index)=>{
-                
+              forecast?.forecastday?.map((value,index)=>{
+                const date = new Date(value.date);
+                const options = {weekday:'long'};
+                const dayName = date.toLocaleDateString('en-US',options);
+            
                 return(
                   <View 
                 key={index}
@@ -169,8 +205,9 @@ const Home = () => {
                     <Image 
                     className='h-20 w-20'
                     resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Monday</Text>
+                    source={weatherImages[value?.day?.condition.text]}/>
+                    <Text className='text-white' >{dayName}</Text>
+                    <Text className='text-white' >{value?.date}</Text>
                     <Text className='text-white font-semibold text-xl' >{value?.day?.maxtemp_c}&#176;</Text>
                 </View>
                 )
@@ -178,89 +215,16 @@ const Home = () => {
               })
             }
 
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Monday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/moderaterain.png')}/>
-                    <Text className='text-white' >Tuesday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/partlycloudy.png')}/>
-                    <Text className='text-white' >Wednesday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Thursday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Friday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Saturday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
-                <View 
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={require('../assets/images/heavyrain.png')}/>
-                    <Text className='text-white' >Sunday</Text>
-                    <Text className='text-white font-semibold text-xl' >23&#176;</Text>
-                </View>
+                
             </ScrollView>
 
           </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
+        )
+      }
+
+      
     </View>
   )
 }
