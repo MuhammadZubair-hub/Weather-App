@@ -3,7 +3,8 @@ export const apiKey = '8ae17b96197a4f9d8d860616250904';
 export const weatherImages = {
 
     'Partly Cloudy ':require('../assets/images/partlycloudy.png'),
-    'Moderate rain ':require('../assets/images/moderaterain.png'),
+    'Partly cloudy':require('../assets/images/partlycloudy.png'),
+    'Moderate rain':require('../assets/images/moderaterain.png'),
     'Patchy rain possible ':require('../assets/images/moderaterain.png'),
     'Patchy rain nearby':require('../assets/images/moderaterain.png'),
     'Sunny':require('../assets/images/sun.png'),
@@ -16,5 +17,13 @@ export const weatherImages = {
     'Moderate or heavy freezing rain':require('../assets/images/heavyrain.png'),
     'Moderate or heavy freezing shower':require('../assets/images/heavyrain.png'),
     'Moderate or heavy freezing with thunder':require('../assets/images/heavyrain.png'),
+    'Light rain shower':require('../assets/images/moderaterain.png'),
     'other':require('../assets/images/moderaterain.png'),
+}
+
+export const weatherIcon ={
+
+    'Drop':require('../assets/icons/drop.png'),
+    'Wind':require('../assets/icons/wind.png'),
+    'Sun':require('../assets/icons/sun.png')
 }

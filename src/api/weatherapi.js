@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { apiKey } from '../constant'
 
-// endpoints 
+// endpoints URl
 const forcastEndpoint = parmas=>`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${parmas.cityName}&days=${parmas.days}&aqi=no&alerts=no`;
 const locationEndpoint = parmas=>`https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=${parmas.cityName}`;
 
@@ -23,7 +23,7 @@ const apiCall = async(endpoint)=>{
 
 }
 
-// dynamic methood for caaling api dynmaiclley
+// dynamic methood for calling api dynmaiclley
 
 export const fetchWeatherForcast = parmas=>{
     const forcastUrl = forcastEndpoint(parmas);

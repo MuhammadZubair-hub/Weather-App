@@ -4,8 +4,10 @@ import { MagnifyingGlassIcon,CalendarDaysIcon } from 'react-native-heroicons/out
 import { MapPinIcon } from 'react-native-heroicons/solid'
 import {debounce} from 'lodash'
 import { fetchLocation, fetchWeatherForcast } from '../api/weatherapi'
-import { weatherImages } from '../constant'
+import { weatherIcon, weatherImages } from '../constant'
 import * as Progress from 'react-native-progress';
+import Forecastcard from '../components/Forecastcard'
+import SomeStats from '../components/SomeStats'
 
 const Home = () => {
 
@@ -42,10 +44,10 @@ const Home = () => {
       cityName:value.name,
       days:'7',
     }).then(response=>{
-      // console.log('forcast data',response)
+      console.log('forcast data',response)
       setWeather(response.data)
       setLoading(false)
-      // console.log('data in weather arry',weather.forecast)
+      console.log('data in weather arry',weather.forecast)
     })
   }
 
@@ -158,23 +160,17 @@ const Home = () => {
                     {current?.condition.text}
                 </Text>
              </View>
+          </View>
 
-          </View>
-          {/* other stats */}
-          <View className='flex-row justify-between mx-4 mb-3' >
-            <View className='flex-row items-center'>
-                <Image className='h-6 w-6' source={require('../assets/icons/wind.png')} ></Image>
-                <Text className='text-white font-semibold text-base ml-2' >{current?.windchill_c}km</Text>
-            </View>
-            <View className='flex-row  items-center'>
-                <Image className='h-6 w-6' source={require('../assets/icons/drop.png')} ></Image>
-                <Text className='text-white font-semibold text-base ml-2' >{current?.humidity}%</Text>
-            </View>
-            <View className='flex-row  items-center'>
-                <Image className='h-6 w-6' source={require('../assets/icons/sun.png')} ></Image>
-                <Text className='text-white font-semibold text-base ml-2' >5:40 PM</Text>
-            </View>
-          </View>
+
+          <SomeStats
+          wind={current?.windchill_c}
+          wind_image={weatherIcon['Wind']}
+          humidity={current?.humidity}
+          humidity_image={weatherIcon['Drop']}
+          time={'12:00'}
+          time_image={weatherIcon['Sun']}
+          ></SomeStats>
 
           {/* forcast for next days */}
           <View className='mb-2 space-y-3'>
@@ -197,19 +193,11 @@ const Home = () => {
                 const dayName = date.toLocaleDateString('en-US',options);
             
                 return(
-                  <View 
-                key={index}
-                className='flex justify-center items-center w-28 py-5 rounded-3xl mr-4 mt-4'
-                style={{backgroundColor:'rgba(5,0,2,0.15)'}}
-                >
-                    <Image 
-                    className='h-20 w-20'
-                    resizeMode='contain'
-                    source={weatherImages[value?.day?.condition.text]}/>
-                    <Text className='text-white' >{dayName}</Text>
-                    <Text className='text-white' >{value?.date}</Text>
-                    <Text className='text-white font-semibold text-xl' >{value?.day?.maxtemp_c}&#176;</Text>
-                </View>
+                  <Forecastcard key={index} 
+                  day={dayName} 
+                  date={value?.date}
+                  image={weatherImages[value?.day?.condition.text]}
+                  temp={value?.day?.maxtemp_c}></Forecastcard>
                 )
 
               })
