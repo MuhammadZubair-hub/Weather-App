@@ -8,6 +8,7 @@ import { weatherIcon, weatherImages } from '../constant'
 import * as Progress from 'react-native-progress';
 import Forecastcard from '../components/Forecastcard'
 import SomeStats from '../components/SomeStats'
+import { getLoaction, setLocationData } from '../utils/loactionasyncstorage'
 
 const Home = () => {
 
@@ -20,8 +21,15 @@ const Home = () => {
 
   const fetchMyweatherdata = async ()=>{
 
+    const savelocation = await getLoaction('location')
+    const defaultloaction = 'Lahore'
+
+    if(savelocation){
+      cityName=savelocation
+    }
+
     fetchWeatherForcast({
-      cityName:'Lahore',
+      cityName:defaultloaction,
       days:'7'
     }).then(response=>{
       setWeather(response.data)
@@ -46,6 +54,9 @@ const Home = () => {
     }).then(response=>{
       console.log('forcast data',response)
       setWeather(response.data)
+      
+      //storing loaction in locelstorage
+      setLocationData('location',value.name)
       setLoading(false)
       console.log('data in weather arry',weather.forecast)
     })
@@ -68,14 +79,15 @@ const Home = () => {
   console.log(forecast)
 
   return (
-    <View className='flex-1 relative'>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'rgba(5,0,2,0.1)'} />
+    <ScrollView contentContainerStyle={{flex:1}} >
+      <View className='flex-1 relative mt-10'>
+      <StatusBar barStyle={'dark-content'}  translucent={true} />
       <Image blurRadius={40} source={require('../assets/images/bg-2.jpg')} className='absolute h-full w-full' />
 
       {
         loading?(
           <View className='flex-1 flex-row justify-center items-center'>
-            <Progress.CircleSnail size={500} thickness={20} color={'blue'} />
+            <Progress.CircleSnail size={200} thickness={10} color={'#007bff'} />
           </View>
         ):(
           <KeyboardAvoidingView 
@@ -173,15 +185,15 @@ const Home = () => {
           ></SomeStats>
 
           {/* forcast for next days */}
-          <View className='mb-2 space-y-3'>
-            <View className='flex-row items-center mx-2' >
+          <View className='mb-2 space-y-3 mx-6'>
+            <View className='flex-row items-center' >
                 <CalendarDaysIcon size={22} color={'white'} ></CalendarDaysIcon>
                 <Text className='text-white text-base ml-2'>Daily Forcast</Text>
             </View>
             
             <ScrollView
             horizontal
-            contentContainerStyle={{paddingHorizontal:30}}
+            //contentContainerStyle={{paddingHorizontal:8}}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             >
@@ -214,6 +226,7 @@ const Home = () => {
 
       
     </View>
+    </ScrollView>
   )
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 const SomeStats = ({wind,wind_image,humidity_image,humidity ,time,time_image}) => {
   return (
-    <View className='flex-row justify-between mx-3 mb-3'>
+    <View className='flex-row justify-between mx-6 mb-3'>
       <View className='flex-row items-center'>
         <Image 
          className='h-6 w-6'
