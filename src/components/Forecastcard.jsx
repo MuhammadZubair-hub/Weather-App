@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 
 const Forecastcard = ({image,day,date, temp,onPress}) => {
 
-    const [carddata,setCardData]= useState([]);
 
   return (
     <TouchableOpacity

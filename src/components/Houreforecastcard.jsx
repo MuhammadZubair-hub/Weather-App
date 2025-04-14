@@ -1,18 +1,27 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 
-const Houreforecastcard = () => {
+const Houreforecastcard = ({text,textimage,temp,time,rain}) => {
+
+  const Chanceofrain = rain;
+
   return (
     <View className='flex-1 justify-center items-center w-29 p-5 rounded-3xl mt-4 mr-4'
-        style={{backgroundColor:'rgba(5,0,2,0.15)'}} 
+         
          >
+          <Text className='text-white '>{time}</Text>
             <Image 
-            className='w-20 h-20'
+            className='w-10 h-10'
             resizeMode='contain'
-            source={image} />
-          <Text className='text-white'>{day}</Text>
-          <Text className='text-white '>{date}</Text>
+            source={textimage} />
+          {
+            Chanceofrain > 0 ?(
+              <Text className='text-white'>{rain} %</Text>
+            ):(null)
+          }
+          
           <Text className='text-white font-semibold text-xl'>{temp}&#176;</Text>
+        
         </View>
   )
 }

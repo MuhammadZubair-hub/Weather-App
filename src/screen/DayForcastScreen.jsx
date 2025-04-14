@@ -1,6 +1,9 @@
 import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { weatherIcon, weatherImages } from '../constant';
+import Houreforecastcard from '../components/Houreforecastcard';
+import { formatTo12Hours } from '../utils/timefunction';
+
 
 
 const DayForcastScreen = ({route}) => {
@@ -12,6 +15,14 @@ const DayForcastScreen = ({route}) => {
     const date = new Date(dayData?.date);
     const options = {weekday:'long'};
     const dayName = date.toLocaleDateString('en-US',options);
+
+    //const [hourforcast,setHourforecast] = useState([]);
+
+    const currentHour = new Date().getHours();
+    const storedHourData =[
+        ...dayData?.hour?.slice(currentHour),
+        ...dayData?.hour?.slice(0,currentHour)
+    ]
 
   return (
     <ScrollView
@@ -37,12 +48,12 @@ const DayForcastScreen = ({route}) => {
                                     <Text className='text-white text-1xl'>{dayData?.date}</Text>
                         </View>
                         <View 
-                            className=' self-start mt-4  rounded-2xl p-5'
+                            className='self-start mt-4  rounded-2xl p-5'
                             style={{backgroundColor:'rgba(255,0,0,0.4)'}}>
                                     
-                                    <Text className='text-white text-3xl mb-2'>Ultra Voilets Ray</Text>
+                                    <Text className='text-white text-3xl mb-2'>Ultra Voilet Ray</Text>
 
-                                    <View className='flex-row flex-wrap  items-center gap-2'>
+                                    <View className='flex-row flex-wrap items-center gap-2'>
                                         <Image className='h-12 w-12'
                                         resizeMode='contain' 
                                          source={require('../assets/icons/ultraviolet.png')} />
@@ -89,7 +100,50 @@ const DayForcastScreen = ({route}) => {
                             style={{backgroundColor:'rgba(255,214,0,0.8)'}}>
                                     <Text className='text-white text-base '>Maximum Temp : {dayData?.day?.maxtemp_c}&#176;</Text>
                             </View>
+                            
                           
+                    </View>
+
+                    <View className='flex-row flex-wrap justify-between items-center mt-4  p-5  h-100 w-100 gap-y-3 rounded-2xl ' 
+                    style={{backgroundColor:'rgba(0,0,0,0.2)'}}>
+
+                        <View className='flex-col justify-between'>
+
+                            <View className='flex-row flex-wrap justify-between'>
+
+                                <View className='self-start rounded-3xl p-2'style={{backgroundColor:'rgba(255,255,255,0.2)'}}>
+                                            <Text className='text-white text-base '>Chance of Rain :   {dayData?.day?.daily_chance_of_rain}%</Text>
+                                </View>
+
+                                <View className='flex-row flex-wrap gap-4 items-center rounded-3xl p-2'style={{backgroundColor:'rgba(255,255,255,0.2)'}}>
+                                            <Image className='h-8 w-8' source={require('../assets/icons/wind.png')} />
+                                            <Text className='text-white text-base '>{dayData?.day?.maxwind_kph}kp/h</Text>
+                                </View>
+                            </View>
+                            
+                            <ScrollView
+                            horizontal
+                            >
+                            {
+
+                                storedHourData.map((value,index)=>{
+
+                                    return(
+                                        <Houreforecastcard
+                                        key={index}
+                                        text={value?.condition?.text}
+                                        textimage={weatherImages[value?.condition?.text]}
+                                        rain={value?.chance_of_rain}
+                                        time={formatTo12Hours(value?.time?.split(' ')[1])}
+                                        temp={value?.temp_c}
+                                        
+                                        />
+                                    )
+                                })
+                            }
+                            </ScrollView>
+                        </View>
+
                     </View>
 
 
