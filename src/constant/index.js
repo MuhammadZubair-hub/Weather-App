@@ -25,5 +25,6 @@ export const weatherIcon ={
 
     'Drop':require('../assets/icons/drop.png'),
     'Wind':require('../assets/icons/wind.png'),
-    'Sun':require('../assets/icons/sun.png')
+    'Sun':require('../assets/icons/sun.png'),
+    'Moon':require('../assets/icons/moon.png'),
 }
