@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import { weatherIcon, weatherImages } from '../constant';
+import { weatherImages } from '../constant';
 import Houreforecastcard from '../components/Houreforecastcard';
 import { formatTo12Hours } from '../utils/timefunction';
 
