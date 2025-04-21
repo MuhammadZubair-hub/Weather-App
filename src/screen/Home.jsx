@@ -10,6 +10,7 @@ import Forecastcard from '../components/Forecastcard'
 import SomeStats from '../components/SomeStats'
 import { getLoaction, setLocationData } from '../utils/loactionasyncstorage'
 import { useNavigation } from '@react-navigation/native'
+import Header from '../components/Drawerheader/Header'
 
 const Home = () => {
 
@@ -82,8 +83,6 @@ const Home = () => {
   console.log(forecast)
 
 
-  const screenHeight = Dimensions.get('window').height;
-
   return (
     <KeyboardAvoidingView 
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
@@ -93,7 +92,7 @@ const Home = () => {
     keyboardShouldPersistTaps="handled"
      >
       <View className='flex-1 relative'>
-      <StatusBar barStyle={'dark-content'}  />
+        
       <Image 
       blurRadius={40} 
       source={require('../assets/images/bg-2.jpg')}
@@ -107,8 +106,12 @@ const Home = () => {
         ):(
           
               <SafeAreaView className='flex-1'>
+      
+                  <Header/>
+                
                   {/* search bar view */}
                 <View className='mx-4 relative z-50 pt-10'>
+                  
                   {/* Search Bar */}
                   <View className='flex-row h-14 justify-end items-center rounded-full px-4 overflow-hidden'
                     style={{ backgroundColor: showsearchbar ? 'rgba(255,255,255,0.2)' : 'transparent' }}>

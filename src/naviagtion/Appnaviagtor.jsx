@@ -6,6 +6,7 @@ import DayForcastScreen from '../screen/DayForcastScreen';
 import { StatusBar , View} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Drawernaviagtor from './Drawernaviagtor';
 
 const Appnaviagtor = () => {
 
@@ -15,6 +16,9 @@ const Appnaviagtor = () => {
     <GestureHandlerRootView>
       <SafeAreaProvider>
         <View style={{flex:1}}>
+          <NavigationContainer>
+            <Drawernaviagtor/>
+          </NavigationContainer>
 
         </View>
       </SafeAreaProvider>

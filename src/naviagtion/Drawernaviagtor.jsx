@@ -10,12 +10,21 @@ const Drawernaviagtor = () => {
     const Drawer = createDrawerNavigator();
 
   return (
-    <Drawer.Navigator screenOptions={{
-        headerShown: false}}
-        drawerContent={(props)=><CoustomDrawer {...props} />}
+    <Drawer.Navigator 
+      screenOptions={{
+        headerShown: false,
+        drawerType: 'front',
+        drawerStyle: {
+            backgroundColor: 'transparent', 
+            width: '75%', 
+        },
+        overlayColor: 'rgba(0,0,0,0.5)',
+        sceneContainerStyle: { backgroundColor: 'transparent' },
+    }}
+    drawerContent={(props) => <CoustomDrawer {...props} />}
         >
-        <Drawer.Screen name='drawer' component={Stacknaviagtor} />
-        <Drawer.Screen name='save screen' component={Savelocation} />
+        <Drawer.Screen name='HomeScreen' component={Stacknaviagtor} />
+        <Drawer.Screen name='savescreen' component={Savelocation} />
     </Drawer.Navigator>
   )
 }
