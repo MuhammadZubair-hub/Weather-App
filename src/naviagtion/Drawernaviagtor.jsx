@@ -2,8 +2,9 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import Stacknaviagtor from './Stacknaviagtor';
-import Savelocation from '../screen/Savelocation';
+// import Savelocation from '../screen/Savelocation';
 import CoustomDrawer from './drawer/CoustomDrawer';
+import Savelocation from '../screen/Savelocation';
 
 const Drawernaviagtor = () => {
 

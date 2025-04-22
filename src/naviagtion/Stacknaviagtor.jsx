@@ -12,9 +12,7 @@ const Stacknaviagtor = () => {
     
          <Stack.Navigator screenOptions={{headerShown:false}}> 
             <Stack.Screen name='Home' component={Home} />
-            <Stack.Screen name='DayForcastScreen' component={DayForcastScreen} options={{
-    header: () => <Header />  // 👈 or headerLeft with custom drawer icon
-  }}/>
+            <Stack.Screen name='DayForcastScreen' component={DayForcastScreen} />
         </Stack.Navigator> 
     
   )

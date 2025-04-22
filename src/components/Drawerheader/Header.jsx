@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     headerConatiner: {
         justifyContent: 'space-between',
         flexDirection: 'row',
-        paddingVertical: 10
+        //paddingVertical: 10
     }
 
 

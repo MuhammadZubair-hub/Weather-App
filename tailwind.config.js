@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors:{
         customblue:'#003049',
+        coustomwhiteblur:'rgba(255,255,255,0.5)',
       }
     },
   },

@@ -11,6 +11,8 @@ import SomeStats from '../components/SomeStats'
 import { getLoaction, setLocationData } from '../utils/loactionasyncstorage'
 import { useNavigation } from '@react-navigation/native'
 import Header from '../components/Drawerheader/Header'
+import { saveLocation } from '../utils/savedloactionstorage'
+import  Ionicons from 'react-native-vector-icons/Ionicons'
 
 const Home = () => {
 
@@ -107,7 +109,13 @@ const Home = () => {
           
               <SafeAreaView className='flex-1'>
       
-                  <Header/>
+                  <View className='mx-10 flex-row justify-between mt-5'>
+                      <Header/>
+
+                      <TouchableOpacity onPress={() => saveLocation({name:location?.name})}>
+                        <Ionicons name="bookmark-outline" size={24} color="white" />
+                      </TouchableOpacity>
+                  </View>
                 
                   {/* search bar view */}
                 <View className='mx-4 relative z-50 pt-10'>
